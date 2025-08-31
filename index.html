@@ -34,7 +34,7 @@
       alert('Trình duyệt không hỗ trợ SpeechRecognition API. Vui lòng dùng Chrome hoặc Edge.');
     }
 
-    function setupRecognition(startBtnId, stopBtnId, outputId, lang = 'auto') {
+    function setupRecognition(startBtnId, stopBtnId, outputId, lang = 'vi-VN') {
       const recognition = new SpeechRecognition();
       recognition.lang = lang;
       recognition.interimResults = true;

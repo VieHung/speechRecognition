@@ -13,18 +13,12 @@
   </style>
 </head>
 <body>
-  <h1>Chuyển giọng nói thành văn bản (Delivery & Customer)</h1>
+  <h1>Chuyển giọng nói thành văn bản</h1>
   <div class="section" id="delivery-section">
-    <h2>Người giao hàng</h2>
+    <h2>Người nói</h2>
     <button id="start-delivery">Bắt đầu ghi âm</button>
     <button id="stop-delivery" disabled>Dừng ghi âm</button>
     <p id="delivery-transcript" class="transcript"></p>
-  </div>
-  <div class="section" id="customer-section">
-    <h2>Khách hàng</h2>
-    <button id="start-customer">Bắt đầu ghi âm</button>
-    <button id="stop-customer" disabled>Dừng ghi âm</button>
-    <p id="customer-transcript" class="transcript"></p>
   </div>
 
   <script>
@@ -72,7 +66,6 @@
 
     // Thiết lập cho hai luồng: delivery và customer
     setupRecognition('start-delivery', 'stop-delivery', 'delivery-transcript');
-    setupRecognition('start-customer', 'stop-customer', 'customer-transcript');
   </script>
 </body>
 </html>

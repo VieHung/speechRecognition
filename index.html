@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chuyển giọng nói thành văn bản</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { text-align: center; }
+    .section { margin-bottom: 30px; }
+    button { margin-right: 10px; padding: 8px 12px; }
+    p.transcript { background: #f2f2f2; padding: 10px; border-radius: 4px; min-height: 50px; }
+  </style>
+</head>
+<body>
+  <h1>Chuyển giọng nói thành văn bản (Delivery & Customer)</h1>
+  <div class="section" id="delivery-section">
+    <h2>Người giao hàng</h2>
+    <button id="start-delivery">Bắt đầu ghi âm</button>
+    <button id="stop-delivery" disabled>Dừng ghi âm</button>
+    <p id="delivery-transcript" class="transcript"></p>
+  </div>
+  <div class="section" id="customer-section">
+    <h2>Khách hàng</h2>
+    <button id="start-customer">Bắt đầu ghi âm</button>
+    <button id="stop-customer" disabled>Dừng ghi âm</button>
+    <p id="customer-transcript" class="transcript"></p>
+  </div>
+
+  <script>
+    // Kiểm tra hỗ trợ SpeechRecognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert('Trình duyệt không hỗ trợ SpeechRecognition API. Vui lòng dùng Chrome hoặc Edge.');
+    }
+
+    function setupRecognition(startBtnId, stopBtnId, outputId, lang = 'auto') {
+      const recognition = new SpeechRecognition();
+      recognition.lang = lang;
+      recognition.interimResults = true;
+      recognition.continuous = true;
+
+      const startBtn = document.getElementById(startBtnId);
+      const stopBtn = document.getElementById(stopBtnId);
+      const output = document.getElementById(outputId);
+
+      startBtn.addEventListener('click', () => {
+        output.textContent = '';
+        recognition.start();
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+      });
+
+      stopBtn.addEventListener('click', () => {
+        recognition.stop();
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+      });
+
+      recognition.addEventListener('result', (event) => {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+        output.textContent = transcript;
+      });
+
+      recognition.addEventListener('error', (event) => {
+        console.error('Error in recognition:', event.error);
+      });
+    }
+
+    // Thiết lập cho hai luồng: delivery và customer
+    setupRecognition('start-delivery', 'stop-delivery', 'delivery-transcript');
+    setupRecognition('start-customer', 'stop-customer', 'customer-transcript');
+  </script>
+</body>
+</html>
